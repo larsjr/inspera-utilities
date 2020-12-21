@@ -1,9 +1,20 @@
 import argparse
 import pathlib
+import platform
 import subprocess
-
+import sys
 
 if __name__ == '__main__':
+
+    system = platform.system()
+    if system == "Windows":
+        browser = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+    elif system == "Linux":
+        browser = "google-chrome"
+    else:
+        sys.stderr.write("OS not supported.")
+        sys.exit(1)
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputfile', type=str, required=True)
 
@@ -24,8 +35,8 @@ if __name__ == '__main__':
             fp.writelines(input_lines)
 
         url = current_line.split(';')[1].strip()
-        p = subprocess.Popen((r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", "--new-window", url))
+        p = subprocess.Popen((browser, "--new-window", url))
         input()
 
-
-
+        with output_file.open("a") as fp:
+            fp.write(current_line)
