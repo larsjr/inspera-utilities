@@ -28,11 +28,6 @@ if __name__ == '__main__':
 
     while len(input_lines) > 0:
         current_line = input_lines.pop(0)
-        with output_file.open("a") as fp:
-            fp.write(current_line)
-
-        with input_file.open('w') as fp:
-            fp.writelines(input_lines)
 
         url = current_line.split(';')[1].strip()
         p = subprocess.Popen((browser, "--new-window", url))
@@ -40,3 +35,7 @@ if __name__ == '__main__':
 
         with output_file.open("a") as fp:
             fp.write(current_line)
+
+        with input_file.open('w') as fp:
+            fp.writelines(input_lines)
+        
