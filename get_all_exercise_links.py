@@ -5,6 +5,7 @@ import pathlib, platform, progressbar, time
 from collections import namedtuple
 from collections import defaultdict
 from argparse import ArgumentParser
+import sys
 
 TableLine = namedtuple('TableLine', ['candidate', 'comission', 'total_score', 'grade', 'row'])
 
@@ -48,8 +49,8 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(executable_path=chromedriver)
     driver.get(commission)
 
-    if username and passord:
-        time.sleep(5)
+    if username and password:
+        time.sleep(10)
         login_link = driver.find_element_by_id('loginWithLocalUserTrigger')
         login_link.click()
         username_field = driver.find_element_by_xpath(
@@ -113,7 +114,8 @@ if __name__ == '__main__':
             current_line += 1
         bar.finish()
 
-    except Exception:
+    except Exception as e:
+        print("An Exception occurred. Perhaps Inspera is not responsive right now? Details: {}".format(str(e)))
         with open(outputfile, 'w') as fp:
             for question, links in question_to_links.items():
                 for link in links:
